@@ -2,13 +2,16 @@ package click.escuela.admin.core.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -43,6 +46,8 @@ public class ProcessorServiceTest {
 	private MockMultipartFile multipart ;
 	private File file = new File("EstudiantesTest.xlsx");
 	private List<StudentApiFile> students =  new ArrayList<>();
+	private String id = UUID.randomUUID().toString();
+	private String processId = UUID.randomUUID().toString();
 
 	@Before
 	public void setUp() throws Exception  {
@@ -80,5 +85,17 @@ public class ProcessorServiceTest {
 		assertThatExceptionOfType(ProcessException.class).isThrownBy(() -> {
 			processorServiceImpl.save(schoolId, multipart);
 		}).withMessage(ProcessMessage.CREATE_ERROR.getDescription()); 
+	}
+	
+	@Test
+	public void whenGetByIdIsOk() throws ProcessException {
+		processorServiceImpl.getBySchoolId(id);
+		verify(processorConnector).getBySchoolId(id);
+	}
+	
+	@Test
+	public void whenFileByIdIsOk() throws ProcessException, IOException {
+		processorServiceImpl.getFileById(id, processId);
+		verify(processorConnector).getFileById(id, processId);
 	}
 }

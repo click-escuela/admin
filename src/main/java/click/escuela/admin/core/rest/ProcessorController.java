@@ -50,7 +50,7 @@ public class ProcessorController {
 		return ResponseEntity.status(HttpStatus.ACCEPTED).body(processorService.getBySchoolId(schoolId));
 	}
 	
-	@Operation(summary = "Get by schoolId", responses = {
+	@Operation(summary = "Get file by Id", responses = {
 			@ApiResponse(responseCode = "200", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ProcessDTO.class))) })
 	@GetMapping(value = "/{processId}", produces = { MediaType.APPLICATION_JSON_VALUE })
 	public ResponseEntity<byte[]> getFileById(@Parameter(name = "School id", required = true) @PathVariable("schoolId") String schoolId,
